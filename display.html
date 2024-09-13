@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8_-DZ8YEYlxfGVadDO-BEfaZRO0jC3Us",
+            authDomain: "hackathon-da8f4.firebaseapp.com",
+            projectId: "hackathon-da8f4",
+            storageBucket: "hackathon-da8f4.appspot.com",
+            messagingSenderId: "1005652018588",
+            appId: "1:1005652018588:web:53df1775003eb2c934b459",
+            measurementId: "G-L46N3NEHHC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                username: params.get('username')
+            };
+        }
+
+        async function loadUserData() {
+            const { username } = getQueryParams();
+            if (username) {
+                try {
+                    const userRef = collection(db, 'users');
+                    const q = query(userRef, where('username', '==', username));
+                    const querySnapshot = await getDocs(q);
+
+                    if (!querySnapshot.empty) {
+                        querySnapshot.forEach(doc => {
+                            const userData = doc.data();
+                            document.getElementById('userData').innerHTML = `
+                                <h2>${userData.firstName} ${userData.lastName}</h2>
+                                <p>Username: ${userData.username}</p>
+                                <p>College: ${userData.college}</p>
+                                <p>Major: ${userData.major}</p>
+                                <p>Expected Graduation Year: ${userData.gradYear}</p>
+                                <p>Github Link: <a href="${userData.gitLink}" target="_blank">${userData.gitLink}</a></p>
+                            `;
+                        });
+                    } else {
+                        document.getElementById('userData').innerHTML = 'No data found for this user.';
+                    }
+                } catch (e) {
+                    console.error('Error fetching user data:', e);
+                    document.getElementById('userData').innerHTML = 'Error fetching user data.';
+                }
+            } else {
+                document.getElementById('userData').innerHTML = 'No username provided.';
+            }
+        }
+
+        loadUserData();
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>User Data</h1>
+        <div id="userData">Loading user data...</div>
+    </div>
+</body>
+</html>

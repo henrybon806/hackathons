@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan QR Code</title>
+    <link rel="stylesheet" href="style-scan.css">
+    <script src="/html5-qrcode-master/minified/html5-qrcode.min.js"></script>
+    <style>
+        .scanner {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin: auto;
+            border: 2px solid #ddd;
+            background: #f9f9f9;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scan QR Code</h1>
+        <div id="scanner" class="scanner"></div>
+        <p id="scanResult">Scan a QR code to view the data.</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8_-DZ8YEYlxfGVadDO-BEfaZRO0jC3Us",
+            authDomain: "hackathon-da8f4.firebaseapp.com",
+            projectId: "hackathon-da8f4",
+            storageBucket: "hackathon-da8f4.appspot.com",
+            messagingSenderId: "1005652018588",
+            appId: "1:1005652018588:web:53df1775003eb2c934b459",
+            measurementId: "G-L46N3NEHHC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function fetchUsernameFromDocument(docId) {
+            try {
+                const docRef = doc(db, 'users', docId);
+                const docSnap = await getDoc(docRef);
+                if (!docSnap.exists()) {
+                    document.getElementById('scanResult').textContent = 'No document found for this ID.';
+                } else {
+                    const data = docSnap.data();
+                    const username = data.username;
+                    if (username) {
+                        window.location.href = `display.html?username=${encodeURIComponent(username)}`;
+                    } else {
+                        document.getElementById('scanResult').textContent = 'Username not found in document.';
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching document: ', error);
+                document.getElementById('scanResult').textContent = 'Error retrieving data.';
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // Use the decoded text as the document ID
+            const docId = decodedText.trim();
+            if (docId) {
+                // Fetch the username from the Firestore document
+                fetchUsernameFromDocument(docId);
+            } else {
+                document.getElementById('scanResult').textContent = 'Invalid QR code. Please scan a valid QR code.';
+            }
+        }
+
+        function onScanFailure(error) {
+            // Handle the scanning error
+            console.warn(`QR Code scan error: ${error}`);
+        }
+
+        const html5QrCode = new Html5Qrcode("scanner");
+
+        html5QrCode.start(
+            { facingMode: "environment" },
+            {
+                fps: 10, // Frames per second
+                qrbox: { width: 250, height: 250 } // Size of the scanning box
+            },
+            onScanSuccess,
+            onScanFailure
+        ).catch(err => {
+            console.error('Error starting QR code scanner:', err);
+        });
+
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            html5QrCode.stop().catch(err => {
+                console.error('Error stopping QR code scanner:', err);
+            });
+        });
+    </script>
+</body>
+</html>

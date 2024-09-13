@@ -1,0 +1,18 @@
+.container {
+    text-align: center;
+    margin: 20px;
+}
+
+.scanner {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#scanResult {
+    margin-top: 20px;
+    font-size: 18px;
+}

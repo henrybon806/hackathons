@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="height=device-height, initial-scale=1.0">
+    <title>Find Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/1.0/jquery.qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1>Find Profile</h1>
+        </div>
+
+        <div class="find-profile">
+            <h2>Enter Username</h2>
+            <input type="text" id="searchUsername" placeholder="Enter Username" maxlength="20">
+            <button id="searchBtn">Search</button>
+        </div>
+
+        <div id="profileData" class="profile-data">
+            <!-- Profile data and QR code will be displayed here -->
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8_-DZ8YEYlxfGVadDO-BEfaZRO0jC3Us",
+            authDomain: "hackathon-da8f4.firebaseapp.com",
+            projectId: "hackathon-da8f4",
+            storageBucket: "hackathon-da8f4.appspot.com",
+            messagingSenderId: "1005652018588",
+            appId: "1:1005652018588:web:53df1775003eb2c934b459",
+            measurementId: "G-L46N3NEHHC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            const username = document.getElementById('searchUsername').value;
+            const profileDataDiv = document.getElementById('profileData');
+
+            try {
+                const q = query(collection(db, 'users'), where('username', '==', username));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    profileDataDiv.innerHTML = '<p>No data found for this username.</p>';
+                } else {
+                    let profileHTML = '';
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const userTag = doc.id; // Get the document ID (user tag)
+                        const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(userTag)}&size=150x150`;
+
+                        profileHTML = `
+                            <h3>Profile Information</h3>
+                            <p><strong>Username:</strong> ${data.username}</p>
+                            <p><strong>First Name:</strong> ${data.firstName}</p>
+                            <p><strong>Last Name:</strong> ${data.lastName}</p>
+                            <p><strong>College:</strong> ${data.college}</p>
+                            <p><strong>Major:</strong> ${data.major}</p>
+                            <p><strong>Expected Graduation Year:</strong> ${data.gradYear}</p>
+                            <p><strong>Github Link:</strong> <a href="${data.gitLink}" target="_blank">${data.gitLink}</a></p>
+                            <h3>QR Code</h3>
+                            <img src="${qrCodeURL}" alt="QR Code">
+                        `;
+                    });
+                    profileDataDiv.innerHTML = profileHTML;
+                }
+            } catch (e) {
+                console.error('Error fetching profile: ', e);
+                profileDataDiv.innerHTML = '<p>Error retrieving data.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

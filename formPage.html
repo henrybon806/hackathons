@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="height=device-height, initial-scale=1.0">
+    <title>Hacker Badge System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1>Hacker Badge System</h1>
+        </div>
+        
+        <div class="name-input">
+            <h2>Username</h2>
+            <input type="text" id="username" placeholder="Username" maxlength="20">
+            <h3>Name</h3>
+            <input type="text" id="firstname" placeholder="First Name" maxlength="20">
+            <input type="text" id="lastname" placeholder="Last Name" maxlength="20">
+        </div>
+
+        <div class="user-data">
+            <h2>Additional Info:</h2>
+            <label for="college">Choose a college:</label>
+            <select id="college">
+                <option value="">Select a college</option>
+            </select>
+            <input type="text" id="major" placeholder="Major(s)" maxlength="40">
+            <input type="number" id="gradDate" placeholder="Expected Graduation Year" maxlength="40">
+            <input type="text" id="gitLink" placeholder="Github Link">
+        </div>
+
+        <button id="submitBtn">Submit</button>
+        <button id="seeProfile">See Profile</button>
+        <button id="scanProfile">Scan Profile</button>
+
+        <div id="advice" class="advice-output">
+            <h3>Account Setup</h3>
+            <p id="adviceText">Please click submit to create your profile.</p>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8_-DZ8YEYlxfGVadDO-BEfaZRO0jC3Us",
+            authDomain: "hackathon-da8f4.firebaseapp.com",
+            projectId: "hackathon-da8f4",
+            storageBucket: "hackathon-da8f4.appspot.com",
+            messagingSenderId: "1005652018588",
+            appId: "1:1005652018588:web:53df1775003eb2c934b459",
+            measurementId: "G-L46N3NEHHC"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            // Get form data
+            const username = document.getElementById('username').value;
+            const firstName = document.getElementById('firstname').value;
+            const lastName = document.getElementById('lastname').value;
+            const college = document.getElementById('college').value;
+            const major = document.getElementById('major').value;
+            const gradYear = document.getElementById('gradDate').value;
+            const gitLink = document.getElementById('gitLink').value;
+    
+            try {
+                // Add a new document with a username field
+                await addDoc(collection(db, 'users'), {
+                    username: username,
+                    firstName: firstName,
+                    lastName: lastName,
+                    college: college,
+                    major: major,
+                    gradYear: gradYear,
+                    gitLink: gitLink
+                });
+    
+                // Redirect to the display page with the username
+                window.location.href = `display.html?username=${encodeURIComponent(username)}`;
+            } catch (e) {
+                console.error('Error adding document: ', e);
+                document.getElementById('adviceText').textContent = 'Error creating profile.';
+            }
+        });
+
+        document.getElementById('scanProfile').addEventListener('click', () => {
+            // Redirect to the QR code scanner page
+            window.location.href = 'scan.html';
+        });
+
+        document.getElementById('seeProfile').addEventListener('click', () => {
+            // Redirect to the findProfile.html page
+            window.location.href = 'findHacker.html';
+        });
+    </script>
+</body>
+</html>
