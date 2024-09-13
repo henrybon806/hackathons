@@ -50,70 +50,64 @@
     </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyC8_-DZ8YEYlxfGVadDO-BEfaZRO0jC3Us",
-            authDomain: "hackathon-da8f4.firebaseapp.com",
-            projectId: "hackathon-da8f4",
-            storageBucket: "hackathon-da8f4.appspot.com",
-            messagingSenderId: "1005652018588",
-            appId: "1:1005652018588:web:53df1775003eb2c934b459",
-            measurementId: "G-L46N3NEHHC"
-        };
-    
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-        document.getElementById('submitBtn').addEventListener('click', async () => {
-            const username = document.getElementById('username').value;
-            const firstName = document.getElementById('firstname').value;
-            const lastName = document.getElementById('lastname').value;
-            const college = document.getElementById('college').value;
-            const major = document.getElementById('major').value;
-            const gradYear = document.getElementById('gradDate').value;
-            const gitLink = document.getElementById('gitLink').value;
+const firebaseConfig = {
+    apiKey: "AIzaSyC8_-DZ8YEYlxfGVadDO-BEfaZRO0jC3Us",
+    authDomain: "hackathon-da8f4.firebaseapp.com",
+    projectId: "hackathon-da8f4",
+    storageBucket: "hackathon-da8f4.appspot.com",
+    messagingSenderId: "1005652018588",
+    appId: "1:1005652018588:web:53df1775003eb2c934b459",
+    measurementId: "G-L46N3NEHHC"
+};
 
-            if (!username || !firstName || !lastName) {
-                document.getElementById('adviceText').textContent = 'Please fill in all required fields.';
-                return;
-            }
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-            try {
-                await addDoc(collection(db, 'users'), {
-                    username: username,
-                    firstName: firstName,
-                    lastName: lastName,
-                    college: college,
-                    major: major,
-                    gradYear: gradYear,
-                    gitLink: gitLink
-                });
+document.getElementById('submitBtn').addEventListener('click', async () => {
+    const username = document.getElementById('username').value;
+    const firstName = document.getElementById('firstname').value;
+    const lastName = document.getElementById('lastname').value;
+    const college = document.getElementById('college').value;
+    const major = document.getElementById('major').value;
+    const gradYear = document.getElementById('gradDate').value;
+    const gitLink = document.getElementById('gitLink').value;
 
-                const q = query(collection(db, 'users'), where('username', '==', username));
-                const querySnapshot = await getDocs(q);
+    if (!username || !firstName || !lastName) {
+        document.getElementById('adviceText').textContent = 'Please fill in all required fields.';
+        return;
+    }
 
-                if (!querySnapshot.empty) {
-                    const doc = querySnapshot.docs[0];
-                    const userTag = doc.id;
-                    const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(userTag)}&size=150x150`;
-
-                    $('#qrcode').qrcode({
-                        text: qrCodeURL,
-                        width: 150,
-                        height: 150
-                    });
-
-                    window.location.href = `display.html?username=${encodeURIComponent(username)}`;
-                } else {
-                    document.getElementById('adviceText').textContent = 'Profile not found after creation.';
-                }
-                window.location.href = `display.html?username=${encodeURIComponent(username)}`;
-            } catch (e) {
-                console.error('Error adding document: ', e);
-                document.getElementById('adviceText').textContent = 'Error creating profile.';
-            }
+    try {
+        await addDoc(collection(db, 'users'), {
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
+            college: college,
+            major: major,
+            gradYear: gradYear,
+            gitLink: gitLink
         });
+
+        const q = query(collection(db, 'users'), where('username', '==', username));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            const doc = querySnapshot.docs[0];
+            const userTag = doc.id;
+            const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(userTag)}&size=150x150`;
+            
+            window.location.href = `display.html?username=${encodeURIComponent(username)}`;
+        } else {
+            document.getElementById('adviceText').textContent = 'Profile not found after creation.';
+        }
+        window.location.href = `display.html?username=${encodeURIComponent(username)}`;
+    } catch (e) {
+        console.error('Error adding document: ', e);
+        document.getElementById('adviceText').textContent = 'Error creating profile.';
+    }
+});
 
         document.getElementById('scanProfile').addEventListener('click', () => {
             window.location.href = 'scan.html';
