@@ -41,7 +41,7 @@ I also ran into issues with the csv file, as I had never worked with scanning a 
 
 2. This is where you will be able to search for other users by username.
 
-![Find Profile](https://github.com/hbono806/hackathons/blob/origin/findprofile.png?raw=true)
+![Find Profile](https://github.com/henrybon806/hackathons/blob/ed4a050142ef1dcc091ad58d727c3d4c9014e6e8/Images/findprofile.png)
 
 3. This is where you can scan everyone's QR codes in order to see your friends' data.
 
