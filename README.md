@@ -39,18 +39,18 @@ With additional time, I would definitely like to add more features to enable cha
 
 1. Here is the standard front layout, where you enter all of your information. You will be able to see your data when you click submit.
 
-![Homepage](https://github.com/hbono806/hackathons/blob/origin/homepage.png?raw=true)
+![Homepage](https://github.com/henrybon806/hackathons/blob/0536590f18c24fd3771a0695be43c74a5744d276/Images/homepage.png)
 
 2. This is where you will be able to search for other users by username.
 
-![Find Profile](https://github.com/hbono806/hackathons/blob/origin/findprofile.png?raw=true)
+![Find Profile](https://github.com/henrybon806/hackathons/blob/ed4a050142ef1dcc091ad58d727c3d4c9014e6e8/Images/findprofile.png)
 
 3. This is where you can scan everyone's QR codes in order to see your friends' data.
 
-![Scan QR Codes](https://github.com/hbono806/hackathons/blob/origin/scan.png?raw=true)
+![Scan QR Codes](https://github.com/henrybon806/hackathons/blob/9870502ccec794b04bbd908b876534591fac5b72/Images/scan.png)
 
 4. Here is my QR code so you can try scanning it for yourself!
 
-![My Profile](https://github.com/hbono806/hackathons/blob/origin/MyProfile.png?raw=true)
+![My Profile](https://github.com/henrybon806/hackathons/blob/e26f130b40e96a63173a7112ccc895132b4d3674/Images/MyProfile.png)
 
 Thank you!
