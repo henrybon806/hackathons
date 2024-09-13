@@ -35,20 +35,20 @@ I also ran into issues with the csv file, as I had never worked with scanning a 
 
 ## Example
 
-1. Here is the standard front layout, where you enter all of you information. You will be able to see your data when you click submit.
+1. Here is the standard front layout, where you enter all of your information. You will be able to see your data when you click submit.
 
-![alt text](https://github.com/[hbono806]/[hackathons]/blob/[origin]/homepage.png?raw=true)
+![Homepage](https://github.com/hbono806/hackathons/blob/origin/homepage.png?raw=true)
 
 2. This is where you will be able to search for other users by username.
 
-![alt text](https://github.com/[hbono806]/[hackathons]/blob/[origin]/findprofile.png?raw=true)
+![Find Profile](https://github.com/hbono806/hackathons/blob/origin/findprofile.png?raw=true)
 
-3. This is where you can scan everyones qr-code in order to see your friends data.
+3. This is where you can scan everyone's QR codes in order to see your friends' data.
 
-![alt text](https://github.com/[hbono806]/[hackathons]/blob/[origin]/scan.png?raw=true)
+![Scan QR Codes](https://github.com/hbono806/hackathons/blob/origin/scan.png?raw=true)
 
-4. Here is my qr-code so you can try scanning it for yourself!
+4. Here is my QR code so you can try scanning it for yourself!
 
-![alt text](https://github.com/[hbono806]/[hackathons]/blob/[origin]/MyProfile.png?raw=true)
+![My Profile](https://github.com/hbono806/hackathons/blob/origin/MyProfile.png?raw=true)
 
 Thank you!
