@@ -37,7 +37,7 @@ I also ran into issues with the csv file, as I had never worked with scanning a 
 
 1. Here is the standard front layout, where you enter all of your information. You will be able to see your data when you click submit.
 
-![Homepage](https://github.com/henrybon806/hackathons/blob/e26f130b40e96a63173a7112ccc895132b4d3674/Images/MyProfile.png)
+![Homepage](https://github.com/henrybon806/hackathons/blob/0536590f18c24fd3771a0695be43c74a5744d276/Images/homepage.png)
 
 2. This is where you will be able to search for other users by username.
 
@@ -49,6 +49,6 @@ I also ran into issues with the csv file, as I had never worked with scanning a 
 
 4. Here is my QR code so you can try scanning it for yourself!
 
-![My Profile](https://github.com/hbono806/hackathons/blob/origin/MyProfile.png?raw=true)
+![My Profile](https://github.com/henrybon806/hackathons/blob/e26f130b40e96a63173a7112ccc895132b4d3674/Images/MyProfile.png)
 
 Thank you!
