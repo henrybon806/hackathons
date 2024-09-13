@@ -6,6 +6,8 @@
     <meta name="viewport" content="height=device-height, initial-scale=1.0">
     <title>Hacker Badge System</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/1.0/jquery.qrcode.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -40,6 +42,11 @@
             <h3>Account Setup</h3>
             <p id="adviceText">Please click submit to create your profile.</p>
         </div>
+
+        <div id="qrCodeContainer">
+            <h3>Your QR Code:</h3>
+            <div id="qrcode"></div>
+        </div>
     </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
@@ -57,9 +64,8 @@
     
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-    
+
         document.getElementById('submitBtn').addEventListener('click', async () => {
-            // Get form data
             const username = document.getElementById('username').value;
             const firstName = document.getElementById('firstname').value;
             const lastName = document.getElementById('lastname').value;
@@ -67,9 +73,13 @@
             const major = document.getElementById('major').value;
             const gradYear = document.getElementById('gradDate').value;
             const gitLink = document.getElementById('gitLink').value;
-    
+
+            if (!username || !firstName || !lastName) {
+                document.getElementById('adviceText').textContent = 'Please fill in all required fields.';
+                return;
+            }
+
             try {
-                // Add a new document with a username field
                 await addDoc(collection(db, 'users'), {
                     username: username,
                     firstName: firstName,
@@ -79,8 +89,25 @@
                     gradYear: gradYear,
                     gitLink: gitLink
                 });
-    
-                // Redirect to the display page with the username
+
+                const q = query(collection(db, 'users'), where('username', '==', username));
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    const doc = querySnapshot.docs[0];
+                    const userTag = doc.id;
+                    const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(userTag)}&size=150x150`;
+
+                    $('#qrcode').qrcode({
+                        text: qrCodeURL,
+                        width: 150,
+                        height: 150
+                    });
+
+                    window.location.href = `display.html?username=${encodeURIComponent(username)}`;
+                } else {
+                    document.getElementById('adviceText').textContent = 'Profile not found after creation.';
+                }
                 window.location.href = `display.html?username=${encodeURIComponent(username)}`;
             } catch (e) {
                 console.error('Error adding document: ', e);
@@ -89,13 +116,40 @@
         });
 
         document.getElementById('scanProfile').addEventListener('click', () => {
-            // Redirect to the QR code scanner page
             window.location.href = 'scan.html';
         });
 
         document.getElementById('seeProfile').addEventListener('click', () => {
-            // Redirect to the findProfile.html page
             window.location.href = 'findHacker.html';
+        });
+
+        async function loadCollegesFromCSV() {
+            try {
+                const response = await fetch('schools.csv');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const csvText = await response.text();
+                const colleges = csvText.split('\n').map(college => college.trim()).filter(college => college !== '');
+                const collegeDropdown = document.getElementById('college');
+
+                colleges.forEach(function(college) {
+                    const option = document.createElement('option');
+                    option.value = college;
+                    option.text = college;
+                    collegeDropdown.appendChild(option);
+                });
+
+                console.log('Colleges loaded successfully');
+            } catch (error) {
+                console.error('Error loading CSV file:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded and parsed');
+            loadCollegesFromCSV();
         });
     </script>
 </body>

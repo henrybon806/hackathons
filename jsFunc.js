@@ -1,3 +1,5 @@
+//testing file - currenlty does not run anymore.
+
 async function loadCollegesFromCSV() {
     try {
         const response = await fetch('schools.csv');

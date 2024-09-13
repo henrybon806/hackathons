@@ -9,7 +9,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-        // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyC8_-DZ8YEYlxfGVadDO-BEfaZRO0jC3Us",
             authDomain: "hackathon-da8f4.firebaseapp.com",
@@ -40,6 +39,10 @@
 
                     if (!querySnapshot.empty) {
                         querySnapshot.forEach(doc => {
+                            const data = doc.data();
+                            const userTag = doc.id;
+                            const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(userTag)}&size=150x150`;
+
                             const userData = doc.data();
                             document.getElementById('userData').innerHTML = `
                                 <h2>${userData.firstName} ${userData.lastName}</h2>
@@ -48,6 +51,8 @@
                                 <p>Major: ${userData.major}</p>
                                 <p>Expected Graduation Year: ${userData.gradYear}</p>
                                 <p>Github Link: <a href="${userData.gitLink}" target="_blank">${userData.gitLink}</a></p>
+                                <h3>QR Code</h3>
+                                <img src="${qrCodeURL}" alt="QR Code">
                             `;
                         });
                     } else {

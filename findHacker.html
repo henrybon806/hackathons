@@ -22,7 +22,6 @@
         </div>
 
         <div id="profileData" class="profile-data">
-            <!-- Profile data and QR code will be displayed here -->
         </div>
     </div>
     <script type="module">
@@ -56,7 +55,7 @@
                     let profileHTML = '';
                     querySnapshot.forEach((doc) => {
                         const data = doc.data();
-                        const userTag = doc.id; // Get the document ID (user tag)
+                        const userTag = doc.id;
                         const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(userTag)}&size=150x150`;
 
                         profileHTML = `

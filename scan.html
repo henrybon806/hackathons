@@ -64,10 +64,8 @@
         }
 
         function onScanSuccess(decodedText, decodedResult) {
-            // Use the decoded text as the document ID
             const docId = decodedText.trim();
             if (docId) {
-                // Fetch the username from the Firestore document
                 fetchUsernameFromDocument(docId);
             } else {
                 document.getElementById('scanResult').textContent = 'Invalid QR code. Please scan a valid QR code.';
@@ -75,7 +73,6 @@
         }
 
         function onScanFailure(error) {
-            // Handle the scanning error
             console.warn(`QR Code scan error: ${error}`);
         }
 
@@ -84,8 +81,8 @@
         html5QrCode.start(
             { facingMode: "environment" },
             {
-                fps: 10, // Frames per second
-                qrbox: { width: 250, height: 250 } // Size of the scanning box
+                fps: 10,
+                qrbox: { width: 250, height: 250 }
             },
             onScanSuccess,
             onScanFailure
@@ -93,7 +90,6 @@
             console.error('Error starting QR code scanner:', err);
         });
 
-        // Cleanup
         window.addEventListener('beforeunload', () => {
             html5QrCode.stop().catch(err => {
                 console.error('Error stopping QR code scanner:', err);

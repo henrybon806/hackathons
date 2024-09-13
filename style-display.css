@@ -4,19 +4,16 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Container for general layout */
 .container {
     width: 80%;
     margin: 0 auto;
 }
 
-/* Header styles */
 h1 {
     text-align: center;
     color: #333;
 }
 
-/* Styles for form sections */
 .name-input,
 .user-data {
     margin: 20px 0;
