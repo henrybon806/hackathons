@@ -21,6 +21,8 @@ Overall, I ran into a couple of issues with the scanning since it took me a whil
 
 I also ran into issues with the csv file, as I had never worked with scanning a csv in javascript and HTML, although I had done it in Java and Python which allowed me to review code from there to overcome this issue as well. 
 
+With additional time, I would definitely like to add more features to enable changing or updating any of the values inputted by the user, as currently, the profile page only displays the user’s data. I would also like to include more information about the user and potentially add a way for different users to connect in the future.
+
 ## HOW TO USE
 
 1. Start by downloading the file from this github page and either CDing into the project file from your terminal or using the project terminal in the text editor or IDE. 
