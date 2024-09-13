@@ -45,7 +45,7 @@ I also ran into issues with the csv file, as I had never worked with scanning a 
 
 3. This is where you can scan everyone's QR codes in order to see your friends' data.
 
-![Scan QR Codes](https://github.com/hbono806/hackathons/blob/origin/scan.png?raw=true)
+![Scan QR Codes](https://github.com/henrybon806/hackathons/blob/9870502ccec794b04bbd908b876534591fac5b72/Images/scan.png)
 
 4. Here is my QR code so you can try scanning it for yourself!
 
